@@ -24,7 +24,7 @@
 
     #gooiKnop {
       padding: 15px 30px;
-      font-size: min(3vw, 24px);
+      font-size: min(2em, 24px);
       border: 3px solid #333;
       border-radius: 10px;
       color: white;
@@ -40,13 +40,13 @@
 
     #resultaat {
       margin-top: 1vw;
-      font-size: 3vw;
+      font-size: 2em;
       font-weight: bold;
     }
 
     #uitleg {
       margin-top: 0.5vw;
-      font-size: 1.5vw;
+      font-size: 1.5em;
       max-width: 300px;
       margin-left: auto;
       margin-right: auto;
@@ -90,6 +90,7 @@
     const uitlegElement = document.getElementById("uitleg");
 
     if (!draaiend) {
+      // Start het draaien
       draaiend = true;
       knop.textContent = "STOP";
       knop.style.backgroundColor = "orange";
@@ -100,24 +101,29 @@
         document.getElementById("dobbelsteen").src = afbeeldingen[index].src;
         document.getElementById("resultaat").textContent = afbeeldingen[index].label;
       }, 100);
+
     } else {
+      // STOP: laat nog 1 seconde extra draaien
       knop.disabled = true;
       knop.textContent = "Wacht";
 
-      clearInterval(interval); // direct stoppen
-      const index = Math.floor(Math.random() * afbeeldingen.length);
-      document.getElementById("dobbelsteen").src = afbeeldingen[index].src;
-      document.getElementById("resultaat").textContent = afbeeldingen[index].label;
-      uitlegElement.textContent = afbeeldingen[index].uitleg;
-      uitlegElement.style.opacity = "1"; // uitleg fade-in
-
-      draaiend = false;
-
       setTimeout(() => {
-        knop.disabled = false;
-        knop.textContent = "Gooi dobbelsteen";
-        knop.style.backgroundColor = "green";
-      }, 5000);
+        clearInterval(interval); // stoppen na 1 sec
+
+        const index = Math.floor(Math.random() * afbeeldingen.length);
+        document.getElementById("dobbelsteen").src = afbeeldingen[index].src;
+        document.getElementById("resultaat").textContent = afbeeldingen[index].label;
+        uitlegElement.textContent = afbeeldingen[index].uitleg;
+        uitlegElement.style.opacity = "1"; // uitleg fade-in
+
+        draaiend = false;
+
+        setTimeout(() => {
+          knop.disabled = false;
+          knop.textContent = "Gooi dobbelsteen";
+          knop.style.backgroundColor = "green";
+        }, 2000);
+      }, 1000); // 1 seconde extra draaien
     }
   }
 
